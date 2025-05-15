@@ -116,16 +116,48 @@ class Graph:
         print("Точное решение не найдено. Используется жадный алгоритм...")
         return self.optimized_greedy_dominating_set(greedy_time)
 
+class Point:
+    def __init__(self, name, value):
+        self.name = name
+        self.value = value
+
+def knn_graph_constructor(arr, k):
+    graph_dict = dict()
+    points = []
+    for i in range(len(arr)):
+        p = Point(name=i, value=arr[i])
+        points.append(p)
+
+    for i in range(len(points)):
+        p = points[i]
+        graph_dict.update({p.name: list(map(lambda x: x.name, sorted(points, key=lambda x: abs(x.value - p.value))))[1:(k+1)]})
+
+    return Graph(graph_dict)
+
+
+def distance_graph_constructor(arr, d):
+    graph_dict = dict()
+    points = []
+    for i in range(len(arr)):
+        p = Point(name=i, value=arr[i])
+        points.append(p)
+
+    for i in range(len(points)):
+        p = points[i]
+        graph_dict.update({p.name: [point.value for point in points if 0 < abs(point.value - p.value) < d]})
+
+    return Graph(graph_dict)
+
+
+
+
 # Тестовые примеры
 if __name__ == "__main__":
 
-    for t in range(0, 100+1):
-        n = 50
-        large_graph = {i: set() for i in range(n)}
-        for i in range(n):
-            large_graph[i] = set([j for j in range(n) if j != i and random.randint(0, 100) >= t])
+    arr = [i/3.14 for i in range(10)]
+    print(knn_graph_constructor(arr, 3).graph)
 
-        g = Graph(large_graph)
-        start = time.time()
-        dominating_number = g.compute_dominating_number(exact_timeout=40, greedy_time=20)
-        print(f"{t}: {time.time() - start:.4f} сек. Число доминирования: {dominating_number}")
+
+    arr = [i for i in range(10)]
+    print(distance_graph_constructor(arr, 4.5).graph)
+
