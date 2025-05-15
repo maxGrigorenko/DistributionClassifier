@@ -8,6 +8,13 @@ class Graph:
         self.n = len(graph_dict)
         self.vertices = list(graph_dict.keys())
 
+    def find_delta(self):
+        m = self.n
+        for v in self.vertices:
+            m = min(m, len(self.graph[v]))
+
+        return m
+
     def find_connected_components(self):
         visited = set()
         components = []
