@@ -104,16 +104,17 @@ class Graph:
             dominated.update(self.graph[v])
         return dominated == set(self.vertices)
 
-    def compute_dominating_number(self, exact_timeout=40, greedy_time=10):
+    def compute_dominating_number(self, exact_timeout=40, greedy_time=10, verbose=True):
         # Пытаемся найти точное решение
         start_time = time.time()
         exact_result = self.exact_dominating_number(exact_timeout)
         if exact_result is not None:
-            print(f"Точное решение найдено за {time.time() - start_time:.2f} сек")
+            if verbose:
+                print(f"Точное решение найдено за {time.time() - start_time:.2f} сек")
             return exact_result
 
-        # Переключаемся на оптимизированный жадный алгоритм
-        print("Точное решение не найдено. Используется жадный алгоритм...")
+        if verbose:
+            print("Точное решение не найдено. Используется жадный алгоритм...")
         return self.optimized_greedy_dominating_set(greedy_time)
 
 class Point:
@@ -130,7 +131,7 @@ def knn_graph_constructor(arr, k):
 
     for i in range(len(points)):
         p = points[i]
-        graph_dict.update({p.name: list(map(lambda x: x.name, sorted(points, key=lambda x: abs(x.value - p.value))))[1:(k+1)]})
+        graph_dict.update({p.name: set(list(map(lambda x: x.name, sorted(points, key=lambda x: abs(x.value - p.value))))[1:(k+1)])})
 
     return Graph(graph_dict)
 
@@ -144,7 +145,7 @@ def distance_graph_constructor(arr, d):
 
     for i in range(len(points)):
         p = points[i]
-        graph_dict.update({p.name: [point.value for point in points if 0 < abs(point.value - p.value) < d]})
+        graph_dict.update({p.name: set([point.value for point in points if 0 < abs(point.value - p.value) < d])})
 
     return Graph(graph_dict)
 
@@ -160,4 +161,3 @@ if __name__ == "__main__":
 
     arr = [i for i in range(10)]
     print(distance_graph_constructor(arr, 4.5).graph)
-
