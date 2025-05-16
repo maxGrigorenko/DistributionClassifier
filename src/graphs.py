@@ -1,47 +1,59 @@
-import numpy as np
-import networkx as nx
 import matplotlib.pyplot as plt
-from sklearn.neighbors import NearestNeighbors
+import networkx as nx
+import numpy as np
 from sklearn.metrics import pairwise_distances
+from sklearn.neighbors import NearestNeighbors
+
 
 class KNN_Graph(nx.Graph):
-    n_vertexes : int
-    k_neighbours : int
-    
+    n_vertexes: int
+    k_neighbours: int
+
     def __init__(self, incoming_graph_data=None, **attr):
         super().__init__(incoming_graph_data, **attr)
         self.n_vertexes = attr["n"]
         self.k_neighbours = attr["k_neighbours"]
-        
-    def build_from_numbers(self, numbers : np.ndarray):
+
+    def build_from_numbers(self, numbers: np.ndarray):
         assert numbers.size == self.n_vertexes
 
         numbers_reshaped = numbers.reshape(-1, 1)
         nbrs = NearestNeighbors(n_neighbors=self.k_neighbours).fit(numbers_reshaped)
         distances, indices = nbrs.kneighbors(numbers_reshaped)
-        
+
         for i in range(self.n_vertexes):
             self.add_node(i, pos=(numbers_reshaped[i][0], numbers_reshaped[i][0]))
 
         for i in range(self.n_vertexes):
             for j in indices[i][1:]:
                 self.add_edge(i, j)
+
     def draw(self):
         plt.figure(figsize=(8, 6))
-        nx.draw(self, nx.spring_layout(self), with_labels=True, node_size=50, node_color='lightblue', font_size=7, font_color='black', font_weight='bold')
+        nx.draw(
+            self,
+            nx.spring_layout(self),
+            with_labels=True,
+            node_size=50,
+            node_color="lightblue",
+            font_size=7,
+            font_color="black",
+            font_weight="bold",
+        )
         plt.title("Изображение KNN-графа")
         plt.show()
 
+
 class Distance_Graph(nx.Graph):
-    n_vertexes : int
-    d_distance : float
+    n_vertexes: int
+    d_distance: float
 
     def __init__(self, incoming_graph_data=None, **attr):
         super().__init__(incoming_graph_data, **attr)
         self.n_vertexes = attr["n"]
         self.d_distance = attr["d_distance"]
-    
-    def build_from_numbers(self, numbers : np.ndarray):
+
+    def build_from_numbers(self, numbers: np.ndarray):
         assert numbers.size == self.n_vertexes
 
         numbers_reshaped = numbers.reshape(-1, 1)
@@ -58,6 +70,15 @@ class Distance_Graph(nx.Graph):
         pos = nx.spring_layout(self)
 
         plt.figure(figsize=(8, 6))
-        nx.draw(self, pos, with_labels=True, node_size=50, node_color='lightblue', font_size=7, font_color='black', font_weight='bold')
+        nx.draw(
+            self,
+            pos,
+            with_labels=True,
+            node_size=50,
+            node_color="lightblue",
+            font_size=7,
+            font_color="black",
+            font_weight="bold",
+        )
         plt.title("Изображение дистанционного графа")
         plt.show()
