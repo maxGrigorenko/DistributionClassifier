@@ -2,10 +2,12 @@ import itertools
 import time
 import random
 
+
 class Point:
     def __init__(self, name, value):
         self.name = name
         self.value = value
+
 
 class Graph:
     def __init__(self, graph_dict):
@@ -74,7 +76,10 @@ def knn_graph_constructor(arr, k):
     graph_dict = {}
 
     for p in points:
-        sorted_points = sorted([other for other in points if other != p], key=lambda x: abs(x.value - p.value))
+        sorted_points = sorted(
+            [other for other in points if other != p],
+            key=lambda x: abs(x.value - p.value),
+        )
         neighbors = set(sorted_points[:k])
         graph_dict[p] = neighbors
 
@@ -98,9 +103,8 @@ def distance_graph_constructor(arr, d):
 # Тестовые примеры
 if __name__ == "__main__":
 
-    arr = [i/3.14 for i in range(10)]
+    arr = [i / 3.14 for i in range(10)]
     print(knn_graph_constructor(arr, 3).graph)
-
 
     arr = [i for i in range(10)]
     print(distance_graph_constructor(arr, 4.5).graph)
