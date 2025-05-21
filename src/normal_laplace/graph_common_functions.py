@@ -82,6 +82,18 @@ class Graph:
 
         return count
 
+    def compute_clique_number(self, d):
+        sorted_points = self.get_sorted_vertices()
+        n = len(sorted_points)
+        max_clique = 0
+        left = 0
+
+        for right in range(n):
+            while sorted_points[right].value - sorted_points[left].value >= d:
+                left += 1
+            max_clique = max(max_clique, right - left + 1)
+
+        return max_clique
 
 def knn_graph_constructor(arr, k):
     points = [Point(name=i, value=val) for i, val in enumerate(arr)]
