@@ -23,6 +23,18 @@ class Graph:
             delta = min(delta, len(self.graph[v]))
         return delta
 
+    def compute_max_degree(self):
+        max_degree = 0
+        for v in self.vertices:
+            max_degree = max(max_degree, len(self.graph[v]))
+        return max_degree
+
+    def compute_mean_degree(self):
+        s = 0
+        for v in self.vertices:
+            s += len(self.graph[v])
+        return s / len(self.vertices)
+
     def find_connected_components(self):
         visited = set()
         components = []
