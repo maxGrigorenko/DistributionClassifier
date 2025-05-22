@@ -1,0 +1,17 @@
+numpy
+pandas
+scikit-learn
+uvicorn
+fastapi
+python-multipart
+streamlit
+Pillow
+matplotlib
+seaborn
+pylint
+flake8
+black
+autoflake
+isort
+networkx
+ipython
