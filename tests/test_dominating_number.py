@@ -1,5 +1,10 @@
 import unittest
-from src.graph_common_functions import Graph, distance_graph_constructor
+import sys
+import os
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '../src/normal_laplace'))
+
+from graph_common_functions import Graph, distance_graph_constructor
 
 class TestDominatingNumber(unittest.TestCase):
     def setUp(self):
