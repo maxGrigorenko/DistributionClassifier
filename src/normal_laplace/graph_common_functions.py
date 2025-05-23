@@ -23,6 +23,18 @@ class Graph:
             delta = min(delta, len(self.graph[v]))
         return delta
 
+    def compute_max_degree(self):
+        max_degree = 0
+        for v in self.vertices:
+            max_degree = max(max_degree, len(self.graph[v]))
+        return max_degree
+
+    def compute_mean_degree(self):
+        s = 0
+        for v in self.vertices:
+            s += len(self.graph[v])
+        return s / len(self.vertices)
+
     def find_connected_components(self):
         visited = set()
         components = []
@@ -70,6 +82,18 @@ class Graph:
 
         return count
 
+    def compute_clique_number(self, d):
+        sorted_points = self.get_sorted_vertices()
+        n = len(sorted_points)
+        max_clique = 0
+        left = 0
+
+        for right in range(n):
+            while sorted_points[right].value - sorted_points[left].value >= d:
+                left += 1
+            max_clique = max(max_clique, right - left + 1)
+
+        return max_clique
 
 def knn_graph_constructor(arr, k):
     points = [Point(name=i, value=val) for i, val in enumerate(arr)]
