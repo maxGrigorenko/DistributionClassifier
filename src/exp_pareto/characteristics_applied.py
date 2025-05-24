@@ -3,7 +3,9 @@ from dataclasses import dataclass
 import networkx as nx
 import numpy as np
 
-import networkx as nx
+from graphs import Distance_Graph
+import igraph as ig
+from networkx.algorithms.dominating import dominating_set
 
 def get_max_degree(graph):
     return max(dict(graph.degree()).values())
@@ -26,16 +28,18 @@ def get_chromatic(graph):
     return max(coloring.values()) + 1
 
 def get_max_independent_set_size(graph):
-    max_independent_set = nx.algorithms.approximation.maximum_independent_set(graph)
-    return len(max_independent_set)
+    g_ig = ig.Graph.TupleList(graph.edges(), directed=False)
+    
+    return g_ig.independence_number()
 
-def get_minimum_dominating_set_size(graph):
-    min_dominating_set = nx.approximation.dominating_set(graph)
-    return len(min_dominating_set)
-
-def get_minimum_clique_cover_size(G): # мин число клик, которыми можно покрыть граф
-    clique_cover = nx.approximation.min_weighted_clique_cover(G)
-    return len(clique_cover)
+def get_minimum_dominating_set_size(graph, n_trials=5):
+    res = float('inf')
+    for _ in range(n_trials):
+        res = min(
+            len(dominating_set(graph)),
+            res
+        )
+    return res
 
 @dataclass
 class CharacteristicsSingle:
@@ -47,7 +51,6 @@ class CharacteristicsSingle:
     chromatic: int
     max_independent_set_size: int
     minimum_dominating_set_size: int
-    minimum_clique_cover_size: int
 
 def create_characteristics_single(graph) -> CharacteristicsSingle:
     return CharacteristicsSingle(
@@ -58,6 +61,5 @@ def create_characteristics_single(graph) -> CharacteristicsSingle:
         number_of_triangles=get_number_of_triangles(graph),
         chromatic=get_chromatic(graph),
         max_independent_set_size=get_max_independent_set_size(graph),
-        minimum_dominating_set_size=get_minimum_dominating_set_size(graph),
-        minimum_clique_cover_size=get_minimum_clique_cover_size(graph)
+        minimum_dominating_set_size=get_minimum_dominating_set_size(graph)
     )
