@@ -28,9 +28,10 @@ def get_chromatic(graph):
     return max(coloring.values()) + 1
 
 def get_max_independent_set_size(graph):
-    g_ig = ig.Graph.TupleList(graph.edges(), directed=False)
-    
-    return g_ig.independence_number()
+    inverted_graph = nx.DiGraph()
+    for u, v in graph.edges():
+        inverted_graph.add_edge(v, u)
+    return get_chromatic(inverted_graph) # chromatic ~ max clique size
 
 def get_minimum_dominating_set_size(graph, n_trials=5):
     res = float('inf')
