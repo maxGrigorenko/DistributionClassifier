@@ -24,13 +24,20 @@ def get_number_of_triangles(graph):
 
 def get_chromatic(graph):
     coloring = nx.coloring.greedy_color(graph, strategy='largest_first')
-    return max(coloring.values()) + 1
+    ans = 0
+    # try:
+    #     ans = max(coloring.values()) + 1
+    # except ValueError:
+    #     graph.draw()
+    ans = max(coloring.values()) + 1
+    return ans
 
 def get_max_independent_set_size(graph):
     inverted_graph = nx.DiGraph()
     for u, v in graph.edges():
         inverted_graph.add_edge(v, u)
-    return get_chromatic(inverted_graph) # chromatic ~ max clique size
+    k = get_chromatic(inverted_graph) # chromatic ~ max clique size
+    return k
 
 def get_minimum_dominating_set_size(graph, n_trials=5):
     res = float('inf')
@@ -61,5 +68,20 @@ def create_characteristics_single(graph) -> CharacteristicsSingle:
         number_of_triangles=get_number_of_triangles(graph),
         chromatic=get_chromatic(graph),
         max_independent_set_size=get_max_independent_set_size(graph),
+        minimum_dominating_set_size=get_minimum_dominating_set_size(graph)
+    )
+
+@dataclass
+class ImplortantCharacteristicsSingle:
+    components: int
+    number_of_triangles: int
+    chromatic: int
+    minimum_dominating_set_size: int
+
+def create_important_characteristics_single(graph) -> ImplortantCharacteristicsSingle:
+    return ImplortantCharacteristicsSingle(
+        components=get_components(graph),
+        number_of_triangles=get_number_of_triangles(graph),
+        chromatic=get_chromatic(graph),
         minimum_dominating_set_size=get_minimum_dominating_set_size(graph)
     )
