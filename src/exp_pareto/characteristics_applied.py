@@ -4,7 +4,6 @@ import networkx as nx
 import numpy as np
 
 from graphs import Distance_Graph
-import igraph as ig
 from networkx.algorithms.dominating import dominating_set
 
 def get_max_degree(graph):

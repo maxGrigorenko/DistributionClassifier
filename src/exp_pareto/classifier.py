@@ -58,7 +58,7 @@ class DistibutionClassifier:
         self.unique_exp_points = self.exp_points.drop_duplicates()
         self.unique_pareto_points = self.pareto_points.drop_duplicates()
 
-        print("Characteristics generated!")
+        print("\nCharacteristics generated!")
 
     def build_A(self): # TODO: change in terms of pd.DataFrame
         print("Building A...")
