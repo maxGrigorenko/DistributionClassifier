@@ -129,7 +129,7 @@ class DistibutionClassifier:
                 # calc I error
                 I_error = calc_I_error_wrapper(A_new_wrapper, exp_points_for_test)
 
-                I_errors.append(I_error)
+                # I_errors.append(I_error)
 
                 if I_error >= 0.05:
                     continue
@@ -139,14 +139,17 @@ class DistibutionClassifier:
 
                 points_powers[tuple(exp_point_to_remove)] = power
 
-                powers.append(power)
+                # powers.append(power)
 
             if len(points_powers) == 0:
                 break
 
             best_point_to_remove = np.array(max(points_powers, key=points_powers.get))
             self.A = self.A.drop(index=self.A[(self.A == best_point_to_remove).all(axis=1)].index)
-            # powers.append(points_powers[tuple(exp_point_to_remove)])
+            self.A_wrapper = ConvexHullWrapper(self.A)
+
+            I_errors.append(calc_I_error_wrapper(self.A_wrapper, exp_points_for_test))
+            powers.append(points_powers[tuple(exp_point_to_remove)])
 
         self.A_wrapper = ConvexHullWrapper(self.A)
         power = calc_power_wrapper(self.A_wrapper, pareto_points_for_test)
