@@ -62,7 +62,10 @@ def draw_numbers_indexes_scatter(
     plt.grid()
     plt.show()
 
-def draw_sorted_barplot(numbers, names, title="Важности характеристик", xlabel="Признаки", ylabel="Важность"):
+
+def draw_sorted_barplot(
+    numbers, names, title="Важности характеристик", xlabel="Признаки", ylabel="Важность"
+):
     indices = np.argsort(numbers)[::-1]
     sorted_numbers = numbers[indices]
     sorted_feature_names = names[indices]
@@ -77,22 +80,41 @@ def draw_sorted_barplot(numbers, names, title="Важности характер
     plt.tight_layout()
     plt.show()
 
-def draw_two_sets_scatter_plots_matrix(first_points, second_points, title, first_label='exp_points', second_label='pareto_points'):
-    numeric_columns = first_points.select_dtypes(include='number').columns
+
+def draw_two_sets_scatter_plots_matrix(
+    first_points,
+    second_points,
+    title,
+    first_label="exp_points",
+    second_label="pareto_points",
+):
+    numeric_columns = first_points.select_dtypes(include="number").columns
     num_columns = len(numeric_columns)
     fig, axes = plt.subplots(num_columns, num_columns, figsize=(20, 20))
 
     for i, col1 in enumerate(numeric_columns):
         for j, col2 in enumerate(numeric_columns):
             if i == j:
-                axes[i, j].text(0.5, 0.5, col1, fontsize=12, ha='center', va='center')
+                axes[i, j].text(0.5, 0.5, col1, fontsize=12, ha="center", va="center")
                 axes[i, j].set_xticks([])
                 axes[i, j].set_yticks([])
             else:
-                axes[i, j].scatter(first_points[col1], first_points[col2], color='blue', label=first_label, alpha=0.5)
-                axes[i, j].scatter(second_points[col1], second_points[col2], color='red', label=second_label, alpha=0.5)
+                axes[i, j].scatter(
+                    first_points[col1],
+                    first_points[col2],
+                    color="blue",
+                    label=first_label,
+                    alpha=0.5,
+                )
+                axes[i, j].scatter(
+                    second_points[col1],
+                    second_points[col2],
+                    color="red",
+                    label=second_label,
+                    alpha=0.5,
+                )
 
-                axes[i, j].set_title(' ')
+                axes[i, j].set_title(" ")
                 axes[i, j].set_xlabel(col1)
                 axes[i, j].set_ylabel(col2)
                 axes[i, j].legend()

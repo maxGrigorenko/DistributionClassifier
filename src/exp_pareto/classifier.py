@@ -1,19 +1,14 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import networkx as nx
-import matplotlib.pyplot as plt
-from sklearn.neighbors import NearestNeighbors
-from sklearn.metrics import pairwise_distances
-from dataclasses import dataclass
-from tqdm import tqdm
-from itertools import product
-
-from graphs import KNN_Graph, Distance_Graph
-from characteristics_applied import *
-from visualisations import *
-from metrics import *
 from scipy.spatial import ConvexHull, Delaunay
-from IPython.display import display
+from tqdm import tqdm
+
+from characteristics_applied import *
+from graphs import Distance_Graph
+from metrics import *
+from visualisations import *
+
 
 class ConvexHullWrapper:
     def __init__(self, points_df):
@@ -25,13 +20,14 @@ class ConvexHullWrapper:
         point = np.array(point)
         return self.delaunay.find_simplex(point) >= 0
 
+
 class DistibutionClassifier:
     lambda_param = 2 / np.sqrt(3)
     alpha_param = 3
     d = 0.005
 
     def __init__(self, n, observations_count=50):
-        self.n_param = n # number of rand var's instances
+        self.n_param = n  # number of rand var's instances
         self.observations_count = observations_count
         self.fitted = False
 
@@ -50,8 +46,8 @@ class DistibutionClassifier:
         self.pareto_points = []
 
         for _ in tqdm(range(self.observations_count)):
-            numbers_exp = np.random.exponential(1/self.lambda_param, self.n_param)
-            numbers_pareto = (np.random.pareto(self.alpha_param, self.n_param) + 1)
+            numbers_exp = np.random.exponential(1 / self.lambda_param, self.n_param)
+            numbers_pareto = np.random.pareto(self.alpha_param, self.n_param) + 1
 
             distance_graph_exp = Distance_Graph(n=self.n_param, d_distance=self.d)
             distance_graph_pareto = Distance_Graph(n=self.n_param, d_distance=self.d)
@@ -64,8 +60,12 @@ class DistibutionClassifier:
             self.exp_points.append(chars_exp)
             self.pareto_points.append(chars_pareto)
 
-        self.exp_points = pd.DataFrame([vars(characteristic) for characteristic in self.exp_points])
-        self.pareto_points = pd.DataFrame([vars(characteristic) for characteristic in self.pareto_points])
+        self.exp_points = pd.DataFrame(
+            [vars(characteristic) for characteristic in self.exp_points]
+        )
+        self.pareto_points = pd.DataFrame(
+            [vars(characteristic) for characteristic in self.pareto_points]
+        )
 
         self.unique_exp_points = self.exp_points.drop_duplicates()
         self.unique_pareto_points = self.pareto_points.drop_duplicates()
@@ -78,8 +78,8 @@ class DistibutionClassifier:
         self.pareto_points = []
 
         for _ in tqdm(range(self.observations_count)):
-            numbers_exp = np.random.exponential(1/self.lambda_param, self.n_param)
-            numbers_pareto = (np.random.pareto(self.alpha_param, self.n_param) + 1)
+            numbers_exp = np.random.exponential(1 / self.lambda_param, self.n_param)
+            numbers_pareto = np.random.pareto(self.alpha_param, self.n_param) + 1
 
             distance_graph_exp = Distance_Graph(n=self.n_param, d_distance=self.d)
             distance_graph_pareto = Distance_Graph(n=self.n_param, d_distance=self.d)
@@ -87,21 +87,27 @@ class DistibutionClassifier:
             distance_graph_pareto.build_from_numbers(numbers_pareto)
 
             chars_exp = create_important_characteristics_single(distance_graph_exp)
-            chars_pareto = create_important_characteristics_single(distance_graph_pareto)
+            chars_pareto = create_important_characteristics_single(
+                distance_graph_pareto
+            )
 
             self.exp_points.append(chars_exp)
             self.pareto_points.append(chars_pareto)
 
-        self.exp_points = pd.DataFrame([vars(characteristic) for characteristic in self.exp_points])
-        self.pareto_points = pd.DataFrame([vars(characteristic) for characteristic in self.pareto_points])
+        self.exp_points = pd.DataFrame(
+            [vars(characteristic) for characteristic in self.exp_points]
+        )
+        self.pareto_points = pd.DataFrame(
+            [vars(characteristic) for characteristic in self.pareto_points]
+        )
 
         self.unique_exp_points = self.exp_points.drop_duplicates()
         self.unique_pareto_points = self.pareto_points.drop_duplicates()
 
-        print("\nCharacteristics generated!")    
+        print("\nCharacteristics generated!")
 
     def get_points_dataset(self):
-        join_column_name='distribution_type'
+        join_column_name = "distribution_type"
         first_points, second_points = self.exp_points.copy(), self.pareto_points.copy()
 
         first_points[join_column_name] = 0
@@ -123,7 +129,9 @@ class DistibutionClassifier:
             points_powers = {}
 
             for exp_point_to_remove in self.A.values:
-                A_new = self.A.drop(index=self.A[(self.A == exp_point_to_remove).all(axis=1)].index)
+                A_new = self.A.drop(
+                    index=self.A[(self.A == exp_point_to_remove).all(axis=1)].index
+                )
                 A_new_wrapper = ConvexHullWrapper(A_new)
 
                 # calc I error
@@ -145,7 +153,9 @@ class DistibutionClassifier:
                 break
 
             best_point_to_remove = np.array(max(points_powers, key=points_powers.get))
-            self.A = self.A.drop(index=self.A[(self.A == best_point_to_remove).all(axis=1)].index)
+            self.A = self.A.drop(
+                index=self.A[(self.A == best_point_to_remove).all(axis=1)].index
+            )
             self.A_wrapper = ConvexHullWrapper(self.A)
 
             I_errors.append(calc_I_error_wrapper(self.A_wrapper, exp_points_for_test))
@@ -169,24 +179,25 @@ class DistibutionClassifier:
             result = self.predict_item(point.values)
             results.append(result)
         return np.array(results)
-    
+
     def draw_metrics(self, I_errors, powers):
         fig, axs = plt.subplots(1, 2, figsize=(12, 6))
 
-        axs[0].scatter(range(len(I_errors)), I_errors, color='blue', alpha=0.6, s=10)
-        axs[0].set_title('Ошибка I рода по итерациям')
-        axs[0].set_xlabel('Итерация')
-        axs[0].set_ylabel('Ошибка I рода')
+        axs[0].scatter(range(len(I_errors)), I_errors, color="blue", alpha=0.6, s=10)
+        axs[0].set_title("Ошибка I рода по итерациям")
+        axs[0].set_xlabel("Итерация")
+        axs[0].set_ylabel("Ошибка I рода")
         axs[0].grid()
 
-        axs[1].scatter(range(len(powers)), powers, color='orange', alpha=0.6, s=10)
-        axs[1].set_title('Мощность по итерациям')
-        axs[1].set_xlabel('Итерация')
-        axs[1].set_ylabel('Мощность')
+        axs[1].scatter(range(len(powers)), powers, color="orange", alpha=0.6, s=10)
+        axs[1].set_title("Мощность по итерациям")
+        axs[1].set_xlabel("Итерация")
+        axs[1].set_ylabel("Мощность")
         axs[1].grid()
 
         plt.tight_layout()
         plt.show()
+
 
 # clfr = DistibutionClassifier(n=50, observations_count=500)
 # clfr_tester = DistibutionClassifier(n=50, observations_count=100)

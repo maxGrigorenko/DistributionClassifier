@@ -58,6 +58,7 @@ def create_characteristics(
             distance_pareto_components=get_components(distance_graph_pareto),
         )
 
+
 def get_characteristics(lambda_param, alpha_param, n, k, d, distrib_type=None):
     numbers_exp = np.random.exponential(1 / lambda_param, n)
     numbers_pareto = np.random.pareto(alpha_param, n) + 1
@@ -133,5 +134,3 @@ def get_average_characteristics(lambda_param, alpha_param, n, k, d, distrib_type
         )
 
     return r
-
-
