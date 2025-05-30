@@ -3,12 +3,15 @@ import numpy as np
 import pandas as pd
 from scipy.spatial import ConvexHull, Delaunay
 from tqdm import tqdm
+import sys
+import os
 
-from characteristics_applied import *
-from graphs import Distance_Graph
 from metrics import *
 from visualisations import *
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../common_tools')))
+from characteristics_applied import *
+from graphs import Distance_Graph
 
 class ConvexHullWrapper:
     def __init__(self, points_df):
