@@ -4,7 +4,7 @@ import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../common_tools')))
 from graphs import *
-from characteristics_applied import *
+from characterisctics_applied import *
 
 def generate_normal(sigma, n):
     return np.random.normal(0, sigma, n)

@@ -10,7 +10,7 @@ from metrics import *
 from visualisations import *
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../common_tools')))
-from characteristics_applied import *
+from characterisctics_applied import *
 from graphs import Distance_Graph
 
 class ConvexHullWrapper:
