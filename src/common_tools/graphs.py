@@ -29,7 +29,7 @@ class KNN_Graph(nx.Graph):
         for i in range(self.n_vertexes):
             for j in indices[i][1:]:
                 self.add_edge(i, j)
-        
+
         self.numbers = numbers.copy()
 
     def draw(self):

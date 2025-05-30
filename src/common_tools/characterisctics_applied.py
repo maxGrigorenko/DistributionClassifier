@@ -5,14 +5,18 @@ from networkx.algorithms.dominating import dominating_set
 
 from graphs import *
 
+
 def get_max_degree(graph):
     return max(dict(graph.degree()).values())
+
 
 def get_min_degree(graph):
     return min(dict(graph.degree()).values())
 
+
 def get_mean_degree(graph):
     return (2 * graph.number_of_edges()) / graph.number_of_nodes()
+
 
 def get_components(graph):
     return nx.number_connected_components(graph)
@@ -45,6 +49,7 @@ def get_minimum_dominating_set_size(graph, n_trials=5):
     for _ in range(n_trials):
         res = min(len(dominating_set(graph)), res)
     return res
+
 
 def get_minimum_dominating_set_size_for_dist(graph: Distance_Graph):
     d = graph.d_distance

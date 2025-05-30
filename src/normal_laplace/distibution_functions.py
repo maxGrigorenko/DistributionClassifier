@@ -1,10 +1,14 @@
-import numpy as np
-import sys
 import os
+import sys
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../common_tools')))
-from graphs import *
+import numpy as np
+
+sys.path.append(
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "../common_tools"))
+)
 from characterisctics_applied import *
+from graphs import *
+
 
 def generate_normal(sigma, n):
     return np.random.normal(0, sigma, n)
@@ -30,14 +34,14 @@ def avg_chars(
             exit(1)
 
         if graph_type == "knn":
-            graph = KNN_Graph(n = n, k_neighbors = k)
+            graph = KNN_Graph(n=n, k_neighbors=k)
             graph.build_from_numbers(array)
 
             delta = get_min_degree(graph)
             characteristic_arr.append(delta)
 
         elif graph_type == "distance":
-            graph = Distance_Graph(n = n, d_distance = d)
+            graph = Distance_Graph(n=n, d_distance=d)
             graph.build_from_numbers(array)
 
             dominating_number = get_minimum_dominating_set_size_for_dist(array)

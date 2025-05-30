@@ -1,11 +1,15 @@
+import os
+import sys
 from dataclasses import dataclass
+
 import networkx as nx
 import numpy as np
-import sys
-import os
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../common_tools')))
+sys.path.append(
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "../common_tools"))
+)
 from graphs import Distance_Graph, KNN_Graph
+
 
 def get_components(graph):
     return nx.number_connected_components(graph)
