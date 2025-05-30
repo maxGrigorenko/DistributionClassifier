@@ -86,7 +86,11 @@ def get_characteristics(lambda_param, alpha_param, n, k, d, distrib_type=None):
         distance_graph_pareto.build_from_numbers(numbers_pareto)
 
     return create_characteristics(
-        knn_graph_exp, distance_graph_exp, knn_graph_pareto, distance_graph_pareto
+        knn_graph_exp,
+        distance_graph_exp,
+        knn_graph_pareto,
+        distance_graph_pareto,
+        distrib_type=distrib_type,
     )
 
 

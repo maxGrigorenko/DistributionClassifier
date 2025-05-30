@@ -34,7 +34,7 @@ def avg_chars(
             exit(1)
 
         if graph_type == "knn":
-            graph = KNN_Graph(n=n, k_neighbors=k)
+            graph = KNN_Graph(n=n, k_neighbours=k)
             graph.build_from_numbers(array)
 
             delta = get_min_degree(graph)
@@ -44,7 +44,7 @@ def avg_chars(
             graph = Distance_Graph(n=n, d_distance=d)
             graph.build_from_numbers(array)
 
-            dominating_number = get_minimum_dominating_set_size_for_dist(array)
+            dominating_number = get_minimum_dominating_set_size_for_dist(graph)
             characteristic_arr.append(dominating_number)
 
         else:
