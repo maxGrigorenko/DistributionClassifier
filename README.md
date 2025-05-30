@@ -1,3 +1,5 @@
+[![CI](https://github.com/maxGrigorenko/DistributionClassifier/actions/workflows/ci.yml/badge.svg)](https://github.com/maxGrigorenko/DistributionClassifier/actions/workflows/ci.yml)
+
 ## Общее описание
 Проект посвящен анализу и сравнению статистических распределений, а также созданию классификатора распределений:
 - **Нормальное vs Лапласа** в папке `/src/normal_laplace`
