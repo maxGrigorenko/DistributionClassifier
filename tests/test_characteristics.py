@@ -2,10 +2,13 @@ import unittest
 import sys
 import os
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src/common_tools/')))
+sys.path.append(
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "../src/common_tools/"))
+)
 
 from graphs import Distance_Graph, KNN_Graph
 from characterisctics_applied import *
+
 
 class TestDominatingNumber(unittest.TestCase):
     def setUp(self):
@@ -39,6 +42,7 @@ class TestDominatingNumber(unittest.TestCase):
 
         self.assertEqual(get_minimum_dominating_set_size_for_dist(graph), 2)
 
+
 class TestCliqueNumber(unittest.TestCase):
     def setUp(self):
         self.d = 2.0
@@ -61,7 +65,6 @@ class TestCliqueNumber(unittest.TestCase):
         arr = np.array([1, 2, 3, 4])  # Все точки в пределах d=2
         graph = Distance_Graph(n=4, d_distance=3.5)
         graph.build_from_numbers(arr)
-        
         self.assertEqual(get_chromatic(graph), 4)
 
     def test_optimal_case(self):
@@ -70,6 +73,7 @@ class TestCliqueNumber(unittest.TestCase):
         graph.build_from_numbers(arr)
 
         self.assertEqual(get_chromatic(graph), 3)  # [1.9, 2.0, 2.1]
+
 
 class TestKNNGraphCharacteristics(unittest.TestCase):
     def setUp(self):
@@ -85,11 +89,18 @@ class TestKNNGraphCharacteristics(unittest.TestCase):
 
         self.assertEqual(characteristics.max_degree, 2)  # Максимальная степень
         self.assertEqual(characteristics.components, 1)  # Количество компонент
-        self.assertEqual(characteristics.number_of_articulation_points, 3)  # Артикулляционные точки
+        self.assertEqual(
+            characteristics.number_of_articulation_points, 3
+        )  # Артикулляционные точки
         self.assertEqual(characteristics.number_of_triangles, 0)  # Треугольники
         self.assertEqual(characteristics.chromatic, 2)  # Хроматическое число
-        self.assertEqual(characteristics.max_independent_set_size, 2)  # Максимальный независимый набор
-        self.assertEqual(characteristics.minimum_dominating_set_size, 3)  # Минимальный доминирующий набор
+        self.assertEqual(
+            characteristics.max_independent_set_size, 2
+        )  # Максимальный независимый набор
+        self.assertEqual(
+            characteristics.minimum_dominating_set_size, 3
+        )  # Минимальный доминирующий набор
+
 
 class TestDistanceGraphCharacteristics(unittest.TestCase):
     def setUp(self):
@@ -105,11 +116,18 @@ class TestDistanceGraphCharacteristics(unittest.TestCase):
         self.assertEqual(characteristics.max_degree, 3)  # Максимальная степень
         self.assertEqual(characteristics.min_degree, 1)  # Минимальная степень
         self.assertEqual(characteristics.components, 1)  # Количество компонент
-        self.assertEqual(characteristics.number_of_articulation_points, 2)  # Артикулляционные точки
+        self.assertEqual(
+            characteristics.number_of_articulation_points, 2
+        )  # Артикулляционные точки
         self.assertEqual(characteristics.number_of_triangles, 1)  # Треугольники
         self.assertEqual(characteristics.chromatic, 3)  # Хроматическое число
-        self.assertEqual(characteristics.max_independent_set_size, 2)  # Максимальный независимый набор
-        self.assertEqual(characteristics.minimum_dominating_set_size, 2)  # Минимальный доминирующий набор
+        self.assertEqual(
+            characteristics.max_independent_set_size, 2
+        )  # Максимальный независимый набор
+        self.assertEqual(
+            characteristics.minimum_dominating_set_size, 2
+        )  # Минимальный доминирующий набор
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()
