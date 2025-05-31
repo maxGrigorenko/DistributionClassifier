@@ -96,7 +96,7 @@ def get_characteristics(lambda_param, alpha_param, n, k, d, distrib_type=None):
 
 def get_average_characteristics(lambda_param, alpha_param, n, k, d, distrib_type=None):
     characteristics_list = []
-    for trial in range(5):
+    for _trial in range(5):
         characteristics = get_characteristics(
             lambda_param, alpha_param, n, k, d, distrib_type
         )

@@ -22,7 +22,7 @@ def avg_chars(
     number_of_experiments, n, graph_type, distribution, sigma=0, beta=0, k=0, d=0.0
 ):
     characteristic_arr = []
-    for t in range(number_of_experiments):
+    for _ in range(number_of_experiments):
         if distribution == "normal":
             array = generate_normal(sigma, n)
 

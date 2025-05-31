@@ -132,7 +132,7 @@ class DistibutionClassifier:
 
         I_errors = []
         powers = []
-        for i in tqdm(range(self.A.shape[0])):
+        for _ in tqdm(range(self.A.shape[0])):
             points_powers = {}
 
             for exp_point_to_remove in self.A.values:
@@ -182,7 +182,7 @@ class DistibutionClassifier:
 
     def predict_items(self, points: pd.DataFrame):
         results = []
-        for index, point in points.iterrows():
+        for _, point in points.iterrows():
             result = self.predict_item(point.values)
             results.append(result)
         return np.array(results)
