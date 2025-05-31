@@ -3,6 +3,8 @@ from dataclasses import dataclass
 import networkx as nx
 from networkx.algorithms.dominating import dominating_set
 
+from graphs import *
+
 
 def get_max_degree(graph):
     return max(dict(graph.degree()).values())
@@ -10,6 +12,10 @@ def get_max_degree(graph):
 
 def get_min_degree(graph):
     return min(dict(graph.degree()).values())
+
+
+def get_mean_degree(graph):
+    return (2 * graph.number_of_edges()) / graph.number_of_nodes()
 
 
 def get_components(graph):
@@ -27,13 +33,7 @@ def get_number_of_triangles(graph):
 
 def get_chromatic(graph):
     coloring = nx.coloring.greedy_color(graph, strategy="largest_first")
-    ans = 0
-    # try:
-    #     ans = max(coloring.values()) + 1
-    # except ValueError:
-    #     graph.draw()
-    ans = max(coloring.values()) + 1
-    return ans
+    return max(coloring.values()) + 1
 
 
 def get_max_independent_set_size(graph):
@@ -49,6 +49,37 @@ def get_minimum_dominating_set_size(graph, n_trials=5):
     for _ in range(n_trials):
         res = min(len(dominating_set(graph)), res)
     return res
+
+
+def get_minimum_dominating_set_size_for_dist(graph: Distance_Graph):
+    d = graph.d_distance
+
+    sorted_numbers = list(graph.get_numbers())
+    sorted_numbers.sort()
+
+    i = 0
+    n = graph.n_vertexes
+
+    count = 0
+    while i < n:
+        current_value = sorted_numbers[i]
+        max_reach = current_value + d
+
+        # Находим последнюю вершину в интервале [current_value, max_reach)
+        j = i
+        while j < n and sorted_numbers[j] < max_reach:
+            j += 1
+
+        # Выбираем последнюю вершину интервала
+        selected = sorted_numbers[j - 1]
+        count += 1
+
+        # Пропускаем все вершины, покрытые выбранной
+        i = j
+        while i < n and sorted_numbers[i] < selected + d:
+            i += 1
+
+    return count
 
 
 @dataclass

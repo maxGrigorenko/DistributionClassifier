@@ -8,11 +8,13 @@ from sklearn.neighbors import NearestNeighbors
 class KNN_Graph(nx.Graph):
     n_vertexes: int
     k_neighbours: int
+    numbers: np.ndarray
 
     def __init__(self, incoming_graph_data=None, **attr):
         super().__init__(incoming_graph_data, **attr)
         self.n_vertexes = attr["n"]
         self.k_neighbours = attr["k_neighbours"]
+        self.numbers = None
 
     def build_from_numbers(self, numbers: np.ndarray):
         assert numbers.size == self.n_vertexes
@@ -27,6 +29,8 @@ class KNN_Graph(nx.Graph):
         for i in range(self.n_vertexes):
             for j in indices[i][1:]:
                 self.add_edge(i, j)
+
+        self.numbers = numbers.copy()
 
     def draw(self):
         plt.figure(figsize=(8, 6))
@@ -47,11 +51,13 @@ class KNN_Graph(nx.Graph):
 class Distance_Graph(nx.Graph):
     n_vertexes: int
     d_distance: float
+    numbers: np.ndarray
 
     def __init__(self, incoming_graph_data=None, **attr):
         super().__init__(incoming_graph_data, **attr)
         self.n_vertexes = attr["n"]
         self.d_distance = attr["d_distance"]
+        self.numbers = None
 
     def build_from_numbers(self, numbers: np.ndarray):
         assert numbers.size == self.n_vertexes
@@ -65,6 +71,11 @@ class Distance_Graph(nx.Graph):
             for j in range(i + 1, self.n_vertexes):
                 if distances[i][j] < self.d_distance:
                     self.add_edge(i, j)
+
+        self.numbers = numbers.copy()
+
+    def get_numbers(self):
+        return self.numbers.copy()
 
     def draw(self):
         pos = nx.spring_layout(self)

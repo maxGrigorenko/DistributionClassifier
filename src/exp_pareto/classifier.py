@@ -1,13 +1,20 @@
+import os
+import sys
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from scipy.spatial import ConvexHull, Delaunay
 from tqdm import tqdm
 
-from characteristics_applied import *
-from graphs import Distance_Graph
 from metrics import *
 from visualisations import *
+
+sys.path.append(
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "../common_tools"))
+)
+from characterisctics_applied import *
+from graphs import Distance_Graph
 
 
 class ConvexHullWrapper:
@@ -125,7 +132,7 @@ class DistibutionClassifier:
 
         I_errors = []
         powers = []
-        for i in tqdm(range(self.A.shape[0])):
+        for _ in tqdm(range(self.A.shape[0])):
             points_powers = {}
 
             for exp_point_to_remove in self.A.values:
@@ -175,7 +182,7 @@ class DistibutionClassifier:
 
     def predict_items(self, points: pd.DataFrame):
         results = []
-        for index, point in points.iterrows():
+        for _, point in points.iterrows():
             result = self.predict_item(point.values)
             results.append(result)
         return np.array(results)

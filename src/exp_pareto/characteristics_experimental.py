@@ -1,8 +1,13 @@
+import os
+import sys
 from dataclasses import dataclass
 
 import networkx as nx
 import numpy as np
 
+sys.path.append(
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "../common_tools"))
+)
 from graphs import Distance_Graph, KNN_Graph
 
 
@@ -81,13 +86,17 @@ def get_characteristics(lambda_param, alpha_param, n, k, d, distrib_type=None):
         distance_graph_pareto.build_from_numbers(numbers_pareto)
 
     return create_characteristics(
-        knn_graph_exp, distance_graph_exp, knn_graph_pareto, distance_graph_pareto
+        knn_graph_exp,
+        distance_graph_exp,
+        knn_graph_pareto,
+        distance_graph_pareto,
+        distrib_type=distrib_type,
     )
 
 
 def get_average_characteristics(lambda_param, alpha_param, n, k, d, distrib_type=None):
     characteristics_list = []
-    for trial in range(5):
+    for _trial in range(5):
         characteristics = get_characteristics(
             lambda_param, alpha_param, n, k, d, distrib_type
         )
